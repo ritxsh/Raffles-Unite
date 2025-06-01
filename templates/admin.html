@@ -6,21 +6,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Admin Sign In</h1>
+    <div class="center-container">
+        <h1>Admin Sign In</h1>
 
-    <form action="/auth" method="post">
-        <label for="ccaid">Enter CCAID:</label>
-        <input type="text" id="ccaid" name="ccaid" required><br><br>
+        <form action="/auth" method="post">
+            <input class = "custom-input" style= "width: 100%; max-width: 250px;" type="text" id="ccaid" name="ccaid" placeholder="Enter CCAID" required><br>
+            <input class = "custom-input" style= "width: 100%; max-width: 250px;" type="password" id="userpw" name="userpw" placeholder="Enter Password"><br>
+            <input class = "custom-button" style= "width: 100%; max-width: 100px;" type="submit" value="Submit" >
+        </form>
 
-        <label for="userpw">Enter Password:</label>
-        <input type="password" id="userpw" name="userpw" required><br><br>
-
-        <input type="submit" value="Submit">
-    </form>
-
-    {% if error %}
-         <p style="color: red; font-weight: bold;">{{ error }}</p>
-    {% endif %}
-
+        {% if error %}
+            <p style="color: red; font-weight: bold;">{{ error }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>

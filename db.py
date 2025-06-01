@@ -38,9 +38,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-#UPDATES
-import sqlite3
-
+#READ
 def verify(userid, upw):
     conn = sqlite3.connect("unite.db")
     cursor = conn.cursor()
@@ -55,27 +53,7 @@ def verify(userid, upw):
         return True
     else:
         return False
-    
-    
 
-
-    
-def addposts(ccaid, opp, date, time, venue, riscore, opscore, vid, caption):
-    conn = sqlite3.connect("unite.db")
-    cursor = conn.cursor()
-    postid = ('''
-        SELECT postid
-        FROM your_table_name
-        ORDER BY id DESC
-        LIMIT 1;
-    ''')
-    postid += 1
-    cursor.execute('INSERT INTO Posts (ccaid, postid, opp, date, time, venue, riscore, opscore, vid, caption) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (ccaid, postid, opp, date, time, venue, riscore, opscore, vid, caption))
-    conn.commit()
-    conn.close()
-
-
-#READ
 def get_upcoming_games():
     conn = sqlite3.connect("unite.db")
     cursor = conn.cursor()
@@ -109,3 +87,82 @@ def get_past_games():
     games = cursor.fetchall()
     conn.close()
     return games
+
+def get_post_by_ccaid(ccaid):#returns posts by a cca
+    conn = sqlite3.connect("unite.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT ccaname, opp, date, time, venue, riscore, opscore, vid, caption
+        FROM Posts
+        WHERE ccaid = ?
+        ORDER BY date ASC, time ASC
+    """, (ccaid,))
+
+    posts = cursor.fetchall()
+    conn.close()
+
+    return posts
+    
+
+def get_post_by_postid(postid):
+    conn = sqlite3.connect("unite.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT *
+        FROM Posts
+        WHERE postid = ?
+    """, (postid,))
+    post = cursor.fetchall()
+    conn.close()
+    return post
+
+def get_ccas(): #returns dict of ccadeets. output[0] = ccaid, output[1] = ccaname
+    conn = sqlite3.connect("unite.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT ccaid, ccaname
+        FROM Posts
+    """,)
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+
+#UPDATE
+def addposts(ccaid, opp, date, time, venue, riscore, opscore, vid, caption):
+    conn = sqlite3.connect("unite.db")
+    cursor = conn.cursor()
+
+    #get latest postid
+    cursor.execute('''
+        SELECT postid
+        FROM Posts
+        ORDER BY postid DESC
+        LIMIT 1;
+    ''')
+    row = cursor.fetchone()
+    last_postid = int(row[0])
+    postid = last_postid + 1 #generate new postid
+
+    #insert new post
+    cursor.execute('''
+        INSERT INTO Posts (ccaid, postid, opp, date, time, venue, riscore, opscore, vid, caption)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (ccaid, postid, opp, date, time, venue, riscore, opscore, vid, caption))
+
+    conn.commit()
+    conn.close()
+
+
+def updatepost(postid, ccaid, opp, date, time, venue, rscore, oscore, vlink, caption):
+    conn = sqlite3.connect('unite.db')
+    cur = conn.cursor()
+    cur.execute("""
+        UPDATE Posts
+        SET opp = ?, date = ?, time = ?, venue = ?, riscore = ?, opscore = ?, vid = ?, caption = ?
+        WHERE postid = ? AND ccaid = ?
+    """, (opp, date, time, venue, rscore, oscore, vlink, caption, postid, ccaid))
+    conn.commit()
+    conn.close()

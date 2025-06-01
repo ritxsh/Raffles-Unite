@@ -2,39 +2,94 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Post</title>
+    <title>Add or Update Post</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function toggleForm(option) {
+            if (option === 'new') {
+                document.getElementById('new-post-form').style.display = 'block';
+                document.getElementById('update-post-form').style.display = 'none';
+            } else {
+                document.getElementById('new-post-form').style.display = 'none';
+                document.getElementById('update-post-form').style.display = 'block';
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Add New Post</h1>
+    <h1>Add or Update Post</h1>
 
-    <form action="/addpost" method="post">
-        <label for="opp">Opponent:</label>
-        <input type="text" id="opp" name="opp" required><br><br>
+    <button class="custom-button" onclick="toggleForm('new')">New Post</button>
+    <button class="custom-button" onclick="toggleForm('update')">Update Existing Post</button>
 
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required><br><br>
+    <!-- New Post Form -->
+    <div id="new-post-form" style="display: block; margin-top: 20px;">
+        <form action="/addpost" method="post">
+            <label for="opp">Opponent:</label>
+            <input class="custom-input" type="text" id="opp" name="opp" required><br><br>
 
-        <label for="time">Time:</label>
-        <input type="time" id="time" name="time" required><br><br>
+            <label for="date">Date:</label>
+            <input class="custom-input" type="date" id="date" name="date" required><br><br>
 
-        <label for="venue">Venue:</label>
-        <input type="text" id="venue" name="venue" required><br><br>
+            <label for="time">Time:</label>
+            <input class="custom-input" type="time" id="time" name="time" required><br><br>
 
-        <label for="caption">Caption:</label><br>
-        <textarea id="caption" name="caption" rows="4" cols="50" required></textarea><br><br>
+            <label for="venue">Venue:</label>
+            <input class="custom-input" type="text" id="venue" name="venue" required><br><br>
 
-        <label for="rscore">RI Score:</label>
-        <input type="number" id="rscore" name="rscore" required><br><br>
+            <label for="caption">Caption:</label><br>
+            <textarea class="custom-input" id="caption" name="caption" rows="4" cols="50" required></textarea><br><br>
 
-        <label for="oscore">Opponent Score:</label>
-        <input type="number" id="oscore" name="oscore" required><br><br>
+            <label for="rscore">RI Score:</label>
+            <input class="custom-input" type="number" id="rscore" name="rscore" required><br><br>
 
-        <label for="vlink">Youtube Link:</label>
-        <input type="url" id="vlink" name="vlink"><br><br>
+            <label for="oscore">Opponent Score:</label>
+            <input class="custom-input" type="number" id="oscore" name="oscore" required><br><br>
 
-        <input type="submit" value="Post">
-    </form>
+            <label for="vlink">Video Link:</label>
+            <input class="custom-input" type="url" id="vlink" name="vlink"><br><br>
+
+            <input type="submit" value="Create Post">
+        </form>
+    </div>
+
+    <!-- Update Post Form -->
+    <div id="update-post-form" style="display: none; margin-top: 20px;">
+        <form action="/updatepost" method="post">
+            <label for="postid">Select Post to Update:</label>
+            <select id="postid-select" name="postid" required>
+                <option value="">-- Select a Post --</option>
+                {% for post in posts %}
+                    <option value="{{ post.postid }}">v {{ post.opp }} ({{ post.date }})</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="u_opp">Opponent:</label>
+            <input class="custom-input" type="text" id="u_opp" name="opp" required><br><br>
+
+            <label for="u_date">Date:</label>
+            <input class="custom-input" type="date" id="u_date" name="date" required><br><br>
+
+            <label for="u_time">Time:</label>
+            <input class="custom-input" type="time" id="u_time" name="time" required><br><br>
+
+            <label for="u_venue">Venue:</label>
+            <input class="custom-input" type="text" id="u_venue" name="venue" required><br><br>
+
+            <label for="u_caption">Caption:</label><br>
+            <textarea class="custom-input" id="u_caption" name="caption" rows="4" cols="50" required></textarea><br><br>
+
+            <label for="u_rscore">RI Score:</label>
+            <input class="custom-input" type="number" id="u_rscore" name="rscore" required><br><br>
+
+            <label for="u_oscore">Opponent Score:</label>
+            <input class="custom-input" type="number" id="u_oscore" name="oscore" required><br><br>
+
+            <label for="u_vlink">Video Link:</label>
+            <input class="custom-input" type="url" id="u_vlink" name="vlink"><br><br>
+
+            <input class="custom-button" type="submit" value="Update Post">
+        </form>
+    </div>
 </body>
 </html>
-
