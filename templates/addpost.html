@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Add New Post</h1>
+
+    <form action="/addpost" method="post">
+        <label for="opp">Opponent:</label>
+        <input type="text" id="opp" name="opp" required><br><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required><br><br>
+
+        <label for="venue">Venue:</label>
+        <input type="text" id="venue" name="venue" required><br><br>
+
+        <label for="caption">Caption:</label><br>
+        <textarea id="caption" name="caption" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="rscore">RI Score:</label>
+        <input type="number" id="rscore" name="rscore" required><br><br>
+
+        <label for="oscore">Opponent Score:</label>
+        <input type="number" id="oscore" name="oscore" required><br><br>
+
+        <label for="vlink">Youtube Link:</label>
+        <input type="url" id="vlink" name="vlink"><br><br>
+
+        <input type="submit" value="Post">
+    </form>
+</body>
+</html>
+

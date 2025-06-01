@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Raffles Unite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h1>Raffles Unite</h1>
+        <div class="dropdown">
+            <div class="dropdown-button">☰</div>
+            <div class="dropdown-content">
+                <a href="{{ url_for('admin') }}">Admin Page</a>
+            </div>
+        </div>
+    </div>
+
+    <!--    UP NEXT     -->
+    {% if upcoming %}
+        <div class="section-title">UP NEXT</div>
+        <div class="scroll-container">
+            {% set shown = 0 %}
+            {% for game in upcoming %}
+                <div class="card">
+                    <div style="font-weight: bold; color: #006400;">{{ game[0] }}</div>
+                    <h3>RI v {{ game[1] }}</h3>
+                    <div>FINALS</div>
+                    <div class="venue">{{ game[4] }}</div>
+                    <div>{{ game[2] }} {{ game[3] }}</div>
+                    <div class="see-more">SEE MORE</div>
+                </div>
+                {% set shown = shown + 1 %}
+            {% endfor %}
+            {% for i in range(shown) %}
+                <div class="card placeholder"></div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!--    RECENT     -->
+    <div class="section-title">RECENT</div>
+    <div class="scroll-container">
+        {% for game in past %}
+            <div class="card">
+                <div style="font-weight: bold; color: #444;">{{ game[0] }} vs {{ game[1] }}</div>
+                <div>{{ game[2] }} {{ game[3] }}</div>
+                <div class="venue">{{ game[4] }}</div>
+                <div style="margin-top: 10px;">
+                    <strong>{{ game[5] }} - {{ game[6] }}</strong>
+                </div>
+                {% if game[8] %}
+                    <div style="margin-top: 5px;"><em>{{ game[8] }}</em></div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
