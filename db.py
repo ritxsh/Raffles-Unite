@@ -146,11 +146,19 @@ def addposts(ccaid, opp, date, time, venue, riscore, opscore, vid, caption):
     last_postid = int(row[0])
     postid = last_postid + 1 #generate new postid
 
+    #get ccaname
+    cursor.execute('''
+        SELECT ccaname
+        FROM Posts
+        WHERE ccaid = ?
+    ''', (ccaid,))
+    ccaname = cursor.fetchone()
+
     #insert new post
     cursor.execute('''
-        INSERT INTO Posts (ccaid, postid, opp, date, time, venue, riscore, opscore, vid, caption)
+        INSERT INTO Posts (ccaid, ccaname, postid, opp, date, time, venue, riscore, opscore, vid, caption)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ''', (ccaid, postid, opp, date, time, venue, riscore, opscore, vid, caption))
+    ''', (ccaid, ccaname, postid, opp, date, time, venue, riscore, opscore, vid, caption))
 
     conn.commit()
     conn.close()
