@@ -17,6 +17,7 @@ html {
     min-height: 130%;
     background: linear-gradient(140deg, #006837, #000000, #000000, #bf9f68);
     background-attachment: fixed;
+    padding-bottom: 10%;
 }
 
 body {

@@ -43,7 +43,7 @@ def auth():
         return render_template('admin.html', error=error_msg)
 
 
-# Show add/update form
+# Show add/update form WORKS
 @app.route('/addpostform')
 def addpost_form():
     ccaid = session.get('ccaid')
@@ -51,7 +51,6 @@ def addpost_form():
 
     posts = get_posts_by_ccaid(ccaid)
     return render_template('addpost.html', posts=posts, ccaname=ccaname)
-
 
 # Add post WORKS
 @app.route('/addpost', methods=['POST'])
@@ -76,7 +75,7 @@ def addpost():
 
     return redirect(url_for('home'))
 
-# Update post BUGGY
+# Update post WORKS
 @app.route('/updatepost', methods=['POST'])
 def update():
     ccaid = session.get('ccaid')
