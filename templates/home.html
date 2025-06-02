@@ -11,7 +11,7 @@
         <div class="dropdown">
             <div class="dropdown-button">☰</div>
             <div class="dropdown-content">
-                <a href="{{ url_for('admin') }}">Admin Page</a>
+                <a href="{{ url_for('admin') }}">CCAL Login</a>
                 <b>CCAs</b>
                 {% for cca in ccas %}
                     <a href="{{ url_for('cca_page', ccaid=cca.ccaid) }}" style = "background-color: #006837; color: #dfb969;">&emsp;{{ cca.ccaname }}</a>
@@ -28,11 +28,9 @@
             {% for game in upcoming %}
                 <div class="card">
                     <div style="font-weight: bold; color: #006400;">{{ game[0] }}</div>
-                    <h3>RI v {{ game[1] }}</h3>
-                    <div>FINALS</div>
-                    <div class="venue">{{ game[4] }}</div>
-                    <div>{{ game[2] }} {{ game[3] }}</div>
-                    <div class="see-more">SEE MORE</div>
+                    <h1>RI v {{ game[1] }}</h1> <!-- ccaname v opp -->
+                    <div class="venue">{{ game[4] }}</div> <!-- venue -->
+                    <div>{{ game[2] }} {{ game[3] }}</div> <!-- date time -->
                 </div>
                 {% set shown = shown + 1 %}
             {% endfor %}
@@ -48,12 +46,14 @@
         {% for game in past %}
             <div class="card">
                 <div class="matchup">{{ game[0] }} vs {{ game[1] }}</div> <!-- ccaname v opp -->
+                <br>
+                <div class="score">{{ game[5] }} - {{ game[6] }}</div><!-- riscore v opscore -->
+                <br>
                 <div>{{ game[2] }} {{ game[3] }}</div> <!-- date time -->
                 <div class="venue">{{ game[4] }}</div> <!-- venue -->
-                <div class="score">{{ game[5] }} - {{ game[6] }}</div><!-- riscore v opscore -->
-                
+                <br>
                 {% if game[8] %}
-                    <div style="margin-top: 10px;"><em>{{ game[8] }}</em></div> <!-- caption -->
+                    <div class="caption"><em>{{ game[8] }}</em></div> <!-- caption -->
                 {% endif %}
             </div>
         {% endfor %}

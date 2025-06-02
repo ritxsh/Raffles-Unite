@@ -13,12 +13,19 @@
     font-style: normal;
 }
 
+html {
+    min-height: 130%;
+    background: linear-gradient(140deg, #006837, #000000, #000000, #bf9f68);
+    background-attachment: fixed;
+}
+
 body {
+    height: 100%;
     font-family: 'Barlow', sans-serif;
-    background: linear-gradient(to right, #003300, #000000);
     color: white;
     margin: 0;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 h1 {
@@ -57,7 +64,8 @@ form {
     border: none;                       
     border-radius: 8px;                 
     font-size: 1rem;
-    cursor: pointer;                    /* pointer on hover */
+    cursor: pointer;                  /* pointer on hover */
+    margin: 4px;
     transition: background-color 0.3s ease;
 }
 
@@ -120,6 +128,7 @@ form {
     font-style: italic;
 }
 
+/* SCROLL */
 .scroll-container {
     display: flex;
     overflow-x: auto;
@@ -127,8 +136,9 @@ form {
     gap: 20px;
 }
 
+/* cards */
 .card {
-    min-width: 250px;
+    width: 250px;
     min-height: 180;
     background-color: #f9f9f9;
     color: black;
@@ -146,7 +156,8 @@ form {
 
 .card .matchup {
     font-weight: bold; 
-    color: #dfb969; 
+    font-family: 'Glacial Indifference', sans-serif;
+    color: #bf9f68; 
     font-size: larger;
     padding: 5px;
 }
@@ -156,9 +167,14 @@ form {
 }
 
 .card .score {
-    font-size: x-large;
+    font-family: 'Glacial Indifference', sans-serif;
+    font-size: 50px;
     padding: 4px;
 
+}
+.card .caption {
+    margin-top: 10px; 
+    color: #006837;
 }
 
 .see-more {
@@ -174,8 +190,23 @@ form {
 /* INPUT */
 .custom-input {
     font-family: 'Barlow', sans-serif;
-    width: 15%;
+    margin: 4px;
+    max-width: 100px;
     height: 4px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.custom-textarea {
+    font-family: 'Barlow', sans-serif;
+    min-width: 150px;
+    height: 50px;
     padding: 12px 16px;
     font-size: 1rem;
     color: #333;

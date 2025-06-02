@@ -58,10 +58,10 @@ def get_upcoming_games():
     conn = sqlite3.connect("unite.db")
     cursor = conn.cursor()
 
-    # Get today's date in YYYY-MM-DD format
+    # today date
     today = datetime.now().strftime("%Y-%m-%d")
 
-    # Select games with date today or in the future, ordered by date and time
+    # select games after today
     cursor.execute("""
         SELECT ccaname, opp, date, time, venue, riscore, opscore, vid, caption
         FROM Posts
@@ -88,50 +88,58 @@ def get_past_games():
     conn.close()
     return games
 
-def get_post_by_ccaid(ccaid):#returns posts by a cca
-    conn = sqlite3.connect("unite.db")
+def get_posts_by_ccaid(ccaid): #gives dict of posts by ccaid (dict required as the details might have to be changed by user)
+    conn = sqlite3.connect('unite.db')  
+    conn.row_factory = sqlite3.Row  
     cursor = conn.cursor()
     
-    cursor.execute("""
-        SELECT ccaname, opp, date, time, venue, riscore, opscore, vid, caption
-        FROM Posts
+    cursor.execute('''
+        SELECT postid, opp, date, time, venue, caption, riscore, opscore, vid
+        FROM posts
         WHERE ccaid = ?
-        ORDER BY date ASC, time ASC
-    """, (ccaid,))
-
-    posts = cursor.fetchall()
-    conn.close()
-
-    return posts
+        ORDER BY date DESC
+    ''', (ccaid,))
     
-
-def get_post_by_postid(postid):
-    conn = sqlite3.connect("unite.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-        SELECT *
-        FROM Posts
-        WHERE postid = ?
-    """, (postid,))
-    post = cursor.fetchall()
+    rows = cursor.fetchall()
+    posts = [dict(row) for row in rows]
     conn.close()
-    return post
+    return posts
 
 def get_ccas(): #returns dict of ccadeets. output[0] = ccaid, output[1] = ccaname
     conn = sqlite3.connect("unite.db")
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT ccaid, ccaname
+        SELECT DISTINCT ccaid, ccaname
         FROM Posts
     """,)
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
 
+def get_ccaname_byid(ccaid):
+    conn = sqlite3.connect("unite.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        SELECT ccaname
+        FROM Accounts
+        WHERE ccaid = ?
+        LIMIT 1
+    """, (ccaid,))
+    
+    result = cursor.fetchone()
+    conn.close()
+
+    if result:
+        return result[0]
+    else:
+        return "Unnamed CCA"  # or return None, and handle it in route
+
+
 
 #UPDATE
-def addposts(ccaid, opp, date, time, venue, riscore, opscore, vid, caption):
+def addposts(ccaid, ccaname, opp, date, time, venue, riscore, opscore, vid, caption):
     conn = sqlite3.connect("unite.db")
     cursor = conn.cursor()
 
@@ -146,23 +154,15 @@ def addposts(ccaid, opp, date, time, venue, riscore, opscore, vid, caption):
     last_postid = int(row[0])
     postid = last_postid + 1 #generate new postid
 
-    #get ccaname
-    cursor.execute('''
-        SELECT ccaname
-        FROM Posts
-        WHERE ccaid = ?
-    ''', (ccaid,))
-    ccaname = cursor.fetchone()
 
     #insert new post
     cursor.execute('''
         INSERT INTO Posts (ccaid, ccaname, postid, opp, date, time, venue, riscore, opscore, vid, caption)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ''', (ccaid, ccaname, postid, opp, date, time, venue, riscore, opscore, vid, caption))
 
     conn.commit()
     conn.close()
-
 
 def updatepost(postid, ccaid, opp, date, time, venue, rscore, oscore, vlink, caption):
     conn = sqlite3.connect('unite.db')

@@ -4,92 +4,138 @@
     <meta charset="UTF-8">
     <title>Add or Update Post</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script>
-        function toggleForm(option) {
-            if (option === 'new') {
-                document.getElementById('new-post-form').style.display = 'block';
-                document.getElementById('update-post-form').style.display = 'none';
-            } else {
-                document.getElementById('new-post-form').style.display = 'none';
-                document.getElementById('update-post-form').style.display = 'block';
-            }
-        }
-    </script>
 </head>
+
+
 <body>
-    <h1>Add or Update Post</h1>
+    <div class="center-container">
+        <h1>Add or Update Post</h1>
 
-    <button class="custom-button" onclick="toggleForm('new')">New Post</button>
-    <button class="custom-button" onclick="toggleForm('update')">Update Existing Post</button>
+        <!--- Toggle Buttons -->
+        <div class="center-container" style="flex-direction: row;">
+        <button class="custom-button" onclick="toggleForm('new')">New Post</button>
+        <button class="custom-button" onclick="toggleForm('update')">Update Existing Post</button>
+        </div>
 
-    <!-- New Post Form -->
-    <div id="new-post-form" style="display: block; margin-top: 20px;">
-        <form action="/addpost" method="post">
-            <label for="opp">Opponent:</label>
-            <input class="custom-input" type="text" id="opp" name="opp" required><br><br>
+        <!-- New Post Form -->
+        <div class="card"  id="new-post-form" style="display: block; margin-top: 20px; width: 45%;">
+            <div class = "center-container">
+                <form action="/addpost" method="post">
+                    <!-- MATCHUP -->
+                    <div class = "center-container" style="flex-direction: row; min-width: 350px;">
+                        <div class="matchup">{{ ccaname }} vs </div>
+                        <input class="custom-input" type="text" id="opp" name="opp" required placeholder="Opponent:">
+                    </div>
 
-            <label for="date">Date:</label>
-            <input class="custom-input" type="date" id="date" name="date" required><br><br>
+                    <!-- DATE TIME-->
+                    <div class = "center-container" style="flex-direction: row;">
+                        <input class="custom-input" type="date" id="date" name="date" required placeholder="Date:">
+                        <input class="custom-input" type="time" id="time" name="time" required placeholder="Time:">
+                    </div>
 
-            <label for="time">Time:</label>
-            <input class="custom-input" type="time" id="time" name="time" required><br><br>
+                    <input class="custom-input" type="text" id="venue" name="venue" required placeholder="Venue:"><br>
 
-            <label for="venue">Venue:</label>
-            <input class="custom-input" type="text" id="venue" name="venue" required><br><br>
+                     <!-- SCORE -->
+                    <div class = "center-container" style="flex-direction: row;">
+                        <input class="custom-input" type="number" id="rscore" name="rscore" required placeholder="RI Score"><br>
+                        <input class="custom-input" type="number" id="oscore" name="oscore" required placeholder="Opponent Score"><br>
+                    </div>
+                    
+                    <textarea class="custom-textarea" id="caption" name="caption" rows="4" cols="50" required placeholder="Caption"></textarea>
+                    <input style="min-width: 400px; margin-top: 1em;"class="custom-input" type="url" id="vlink" name="vlink" placeholder="Video Link">
+                    <h3 style="font-size: x-small;">Only submit youtube links</h3>
 
-            <label for="caption">Caption:</label><br>
-            <textarea class="custom-input" id="caption" name="caption" rows="4" cols="50" required></textarea><br><br>
+                    <button class="custom-button" type = "submit" value="Create Post">Create post</button>
+                </form>
+            </div>
+        </div>
 
-            <label for="rscore">RI Score:</label>
-            <input class="custom-input" type="number" id="rscore" name="rscore" required><br><br>
+        <!-- Update Post Form -->
+        <div class = "card" id="update-post-form"  style="display: block; margin-top: 20px; width: 45%;">
+            <div class="center-container"> 
+                <form action="/updatepost" method="post">
+                    <!-- DROPDOWN MENU -->
+                    <div class = "center-container" style="flex-direction: row; min-width: 350px;">
+                        <h3>Select Post to Update:</h3><br>
+                        <select id="postid-select" name="postid" required>
+                            <option value="">-- Select a Post --</option>
+                            {% for post in posts %}
+                            <option value="{{ post.postid }}"
+                                    data-opp="{{ post.opp }}"
+                                    data-date="{{ post.date }}"
+                                    data-time="{{ post.time }}"
+                                    data-venue="{{ post.venue }}"
+                                    data-caption="{{ post.caption }}"
+                                    data-rscore="{{ post.riscore }}"
+                                    data-oscore="{{ post.opscore }}"
+                                    data-vlink="{{ post.vid }}">
+                                    v {{ post.opp }} ({{ post.date }})
+                            </option>
 
-            <label for="oscore">Opponent Score:</label>
-            <input class="custom-input" type="number" id="oscore" name="oscore" required><br><br>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    
+                    <!-- MATCHUP -->
+                    <div class = "center-container" style="flex-direction: row; min-width: 350px;">
+                        <div class="matchup">{{ ccaname }} vs </div>
+                        <input class="custom-input" type="text" id="u_opp" name="opp" required placeholder="Opponent:">
+                    </div>
 
-            <label for="vlink">Video Link:</label>
-            <input class="custom-input" type="url" id="vlink" name="vlink"><br><br>
+                    <!-- DATE TIME -->
+                    <div class = "center-container" style="flex-direction: row;">
+                        <input class="custom-input" type="date" id="u_date" name="date" required placeholder="Date:">
+                        <input class="custom-input" type="time" id="u_time" name="time" required placeholder="Time:">
+                    </div>
+                    
+                    <input class="custom-input" type="text" id="u_venue" name="venue" required placeholder="Venue:"><br>
 
-            <input type="submit" value="Create Post">
-        </form>
+                    <!-- SCORE -->
+                    <div class = "center-container" style="flex-direction: row;">
+                        <input class="custom-input" type="number" id="u_rscore" name="rscore" required placeholder="RI Score"><br>
+                        <input class="custom-input" type="number" id="u_oscore" name="oscore" required placeholder="Opponent Score"><br>
+                    </div>
+                    
+                    <textarea class="custom-textarea" id="u_caption" name="caption" rows="4" cols="50" required placeholder="Caption"></textarea>
+                    <input style="min-width: 400px; margin-top: 1em;"class="custom-input" type="url" id="u_vlink" name="vlink" placeholder="Video Link">
+                    <h3 style="font-size: x-small;">Only submit youtube links</h3>
+
+                    <button class="custom-button" type = "submit" value="Update Post">Update post</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <!-- Update Post Form -->
-    <div id="update-post-form" style="display: none; margin-top: 20px;">
-        <form action="/updatepost" method="post">
-            <label for="postid">Select Post to Update:</label>
-            <select id="postid-select" name="postid" required>
-                <option value="">-- Select a Post --</option>
-                {% for post in posts %}
-                    <option value="{{ post.postid }}">v {{ post.opp }} ({{ post.date }})</option>
-                {% endfor %}
-            </select><br><br>
+    <!-- JavaScript to toggle between new post or edit post + autofill details (ChatGPT)-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function toggleForm(option) {
+                document.getElementById('new-post-form').style.display = option === 'new' ? 'block' : 'none';
+                document.getElementById('update-post-form').style.display = option === 'new' ? 'none' : 'block';
+            }
 
-            <label for="u_opp">Opponent:</label>
-            <input class="custom-input" type="text" id="u_opp" name="opp" required><br><br>
+            // Make toggleForm accessible globally
+            window.toggleForm = toggleForm;
 
-            <label for="u_date">Date:</label>
-            <input class="custom-input" type="date" id="u_date" name="date" required><br><br>
+            const select = document.getElementById('postid-select');
+            if (select) {
+                select.addEventListener('change', function () {
+                    const selected = this.options[this.selectedIndex];
+                    if (!selected || !selected.dataset) return;
 
-            <label for="u_time">Time:</label>
-            <input class="custom-input" type="time" id="u_time" name="time" required><br><br>
+                    document.getElementById('u_opp').value = selected.dataset.opp || '';
+                    document.getElementById('u_date').value = selected.dataset.date || '';
+                    document.getElementById('u_time').value = selected.dataset.time || '';
+                    document.getElementById('u_venue').value = selected.dataset.venue || '';
+                    document.getElementById('u_caption').value = selected.dataset.caption || '';
+                    document.getElementById('u_rscore').value = selected.dataset.rscore || '';
+                    document.getElementById('u_oscore').value = selected.dataset.oscore || '';
+                    document.getElementById('u_vlink').value = selected.dataset.vlink || '';
+                });
+            }
+        });
+    </script>
 
-            <label for="u_venue">Venue:</label>
-            <input class="custom-input" type="text" id="u_venue" name="venue" required><br><br>
-
-            <label for="u_caption">Caption:</label><br>
-            <textarea class="custom-input" id="u_caption" name="caption" rows="4" cols="50" required></textarea><br><br>
-
-            <label for="u_rscore">RI Score:</label>
-            <input class="custom-input" type="number" id="u_rscore" name="rscore" required><br><br>
-
-            <label for="u_oscore">Opponent Score:</label>
-            <input class="custom-input" type="number" id="u_oscore" name="oscore" required><br><br>
-
-            <label for="u_vlink">Video Link:</label>
-            <input class="custom-input" type="url" id="u_vlink" name="vlink"><br><br>
-
-            <input class="custom-button" type="submit" value="Update Post">
-        </form>
-    </div>
 </body>
 </html>

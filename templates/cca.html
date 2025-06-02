@@ -11,25 +11,24 @@
         <div class="dropdown">
             <div class="dropdown-button">☰</div>
             <div class="dropdown-content">
-                <a href="{{ url_for('admin') }}">Admin Page</a>
-                <b>CCAs</b>
-                {% for cca in ccas %}
-                    <a href="{{ url_for('cca_page', ccaid=cca.ccaid) }}" style = "background-color: #006837; color: #dfb969;">&emsp;{{ cca.ccaname }}</a>
-                {% endfor %}
+                <a href="{{ url_for('admin') }}">CCAL Login</a> 
+                <a href="{{ url_for('home')}}">Home Page</a>
             </div>
         </div>
     </div>
 
+    <div class="section-title">{{ ccaname }}</div>
+
     <div class="scroll-container">
         {% for game in posts %}
             <div class="card">
-                <div class="matchup">{{ game[0] }} vs {{ game[1] }}</div> <!-- ccaname v opp -->
-                <div>{{ game[2] }} {{ game[3] }}</div> <!-- date time -->
-                <div class="venue">{{ game[4] }}</div> <!-- venue -->
-                <div class="score">{{ game[5] }} - {{ game[6] }}</div><!-- riscore v opscore -->
+                <div class="matchup">{{ ccaname }} vs {{ game.opp }}</div> <!-- ccaname v opp -->
+                <div>{{ game.date }} {{ game.time }}</div> <!-- date time -->
+                <div class="venue">{{ game.venue }}</div> <!-- venue -->
+                <div class="score">{{ game.riscore }} - {{ game.opscore }}</div><!-- riscore v opscore -->
                 
                 {% if game[8] %}
-                    <div style="margin-top: 10px;"><em>{{ game[8] }}</em></div> <!-- caption -->
+                    <div class="caption"><em>{{ game.caption }}</em></div> <!-- caption -->
                 {% endif %}
             </div>
         {% endfor %}
