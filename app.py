@@ -17,14 +17,7 @@ def home():
 @app.route('/<postid>')
 def post(postid):
     post = get_post_byid(postid)
-    
-    # Extract video ID from share link
-    if "vid" in post:
-        vidid = extract_youtube_id(post["vid"])
-    else:
-        vidid = ""
-
-    return render_template("post.html", post=post, vidid=vidid)
+    return render_template("post.html", post=post)
 
 #CCA pages (ccaid in url itself) WORKS
 @app.route('/cca/<ccaid>')

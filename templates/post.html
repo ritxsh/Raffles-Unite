@@ -28,7 +28,9 @@
 
         {% if post["vid"] %}
         <div class="right-section">
-            <div class="match-stage">{{ post["result"] }}</div>
+            {% if post["result"]}
+                <div class="match-stage">{{ post["result"] }}</div>
+            {% endif %}
             <div class="video-container">
                 {{ post["vid"] | safe }}
             </div>
