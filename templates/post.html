@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Raffles Unite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h1>Raffles Unite</h1>
+        <div class="dropdown">
+            <div class="dropdown-button">☰</div>
+            <div class="dropdown-content">
+                <a href="{{ url_for('admin') }}">CCAL Login</a> 
+                <a href="{{ url_for('home')}}">Home Page</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="post-container">
+        <div class="left-section">
+            <div class="section-title">{{ post["ccaname"] }} v {{ post["opp"]}}</div>
+            <div class="matchup">RI v {{ post["opp"] }}</div>
+            <div class="score">{{ post["riscore"] }} - {{ post["opscore"] }}</div>
+            <div class="venue">{{ post["venue"] }}</div>
+            <div class="venue">{{ post["date"] }} {{ post["time"] }}</div>
+        </div>
+
+        {% if post["vid"] %}
+        <div class="right-section">
+            <div class="match-stage">FINALS</div>
+            <div class="video-container">
+                {{ post["vid"] | safe }}
+            </div>
+            <div class="caption">Caption</div>
+        </div>
+        {% endif %}
+    </div>
+    
+</body>
+</html>

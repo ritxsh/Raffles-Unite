@@ -26,6 +26,7 @@
                 <div>{{ game.date }} {{ game.time }}</div> <!-- date time -->
                 <div class="venue">{{ game.venue }}</div> <!-- venue -->
                 <div class="score">{{ game.riscore }} - {{ game.opscore }}</div><!-- riscore v opscore -->
+                <a href="{{ url_for('post', postid=game.postid) }}">Click here to view</a>
                 
                 {% if game[8] %}
                     <div class="caption"><em>{{ game.caption }}</em></div> <!-- caption -->

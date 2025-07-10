@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from db import init_db, verify, addposts, updatepost, get_upcoming_games, get_past_games, get_posts_by_ccaid, get_ccas, get_ccaname_byid
+from db import init_db, verify, addposts, updatepost, get_upcoming_games, get_past_games, get_posts_by_ccaid, get_ccas, get_ccaname_byid, get_post_byid, extract_youtube_id
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  #remembers all the login details etc
@@ -12,6 +12,18 @@ def home():
     upcoming = get_upcoming_games()
     past = get_past_games()
     return render_template('home.html', upcoming=upcoming, past=past, ccas=ccas)
+
+@app.route('/<postid>')
+def post(postid):
+    post = get_post_byid(postid)
+    
+    # Extract video ID from share link
+    if "vid" in post:
+        vidid = extract_youtube_id(post["vid"])
+    else:
+        vidid = ""
+
+    return render_template("post.html", post=post, vidid=vidid)
 
 #CCA pages (ccaid in url itself) WORKS
 @app.route('/cca/<ccaid>')
@@ -41,7 +53,6 @@ def auth():
     else:
         error_msg = "Invalid CCAID or password. Please try again."
         return render_template('admin.html', error=error_msg)
-
 
 # Show add/update form WORKS
 @app.route('/addpostform')

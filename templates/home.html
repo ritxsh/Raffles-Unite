@@ -31,6 +31,7 @@
                     <h1>RI v {{ game[1] }}</h1> <!-- ccaname v opp -->
                     <div class="venue">{{ game[4] }}</div> <!-- venue -->
                     <div>{{ game[2] }} {{ game[3] }}</div> <!-- date time -->
+                    <a href="{{ url_for('post', postid=game.postid) }}">Click here to view</a>
                 </div>
                 {% set shown = shown + 1 %}
             {% endfor %}
@@ -41,19 +42,20 @@
     {% endif %}
 
     <!--    RECENT     -->
-    <div class="section-title">RECENT</div>
+    <div class="section-title" style = "font-size: larger; color: antiquewhite;">RECENT</div>
     <div class="scroll-container">
         {% for game in past %}
             <div class="card">
-                <div class="matchup">{{ game[0] }} vs {{ game[1] }}</div> <!-- ccaname v opp -->
+                <div class="matchup" style = "text-align: center;">{{ game[0] }} vs {{ game[1] }}</div> <!-- ccaname v opp -->
                 <br>
-                <div class="score">{{ game[5] }} - {{ game[6] }}</div><!-- riscore v opscore -->
+                <div class="score" style = "text-align: center;">{{ game[5] }} - {{ game[6] }}</div><!-- riscore v opscore -->
                 <br>
                 <div>{{ game[2] }} {{ game[3] }}</div> <!-- date time -->
-                <div class="venue">{{ game[4] }}</div> <!-- venue -->
+                <div class="venue" style = "text-align: center;">{{ game[4] }}</div> <!-- venue -->
+                <a href="{{ url_for('post', postid = game[9]) }}">Click here to view</a>
                 <br>
                 {% if game[8] %}
-                    <div class="caption"><em>{{ game[8] }}</em></div> <!-- caption -->
+                    <div class="caption",><em>{{ game[8] }}</em></div> <!-- caption -->
                 {% endif %}
             </div>
         {% endfor %}
