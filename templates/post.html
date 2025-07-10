@@ -28,11 +28,11 @@
 
         {% if post["vid"] %}
         <div class="right-section">
-            <div class="match-stage">FINALS</div>
+            <div class="match-stage">{{ post["result"] }}</div>
             <div class="video-container">
                 {{ post["vid"] | safe }}
             </div>
-            <div class="caption">Caption</div>
+            <div class="caption">{{ post["caption"] }}</div>
         </div>
         {% endif %}
     </div>
