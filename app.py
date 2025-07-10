@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from db import init_db, verify, addposts, updatepost, get_upcoming_games, get_past_games, get_posts_by_ccaid, get_ccas, get_ccaname_byid, get_post_byid, extract_youtube_id
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  #remembers all the login details etc
@@ -109,4 +110,5 @@ def update():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
