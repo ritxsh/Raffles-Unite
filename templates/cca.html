@@ -17,15 +17,15 @@
         </div>
     </div>
 
-    <div class="section-title">{{ ccaname }}</div>
+    <div class="section-title" style = "font-size: larger; color: antiquewhite;">{{ ccaname }}</div>
 
     <div class="scroll-container">
         {% for game in posts %}
             <div class="card">
-                <div class="matchup">{{ ccaname }} vs {{ game.opp }}</div> <!-- ccaname v opp -->
+                <div class="matchup" style = "text-align: center;">{{ ccaname }} vs {{ game.opp }}</div> <!-- ccaname v opp -->
                 <div>{{ game.date }} {{ game.time }}</div> <!-- date time -->
-                <div class="venue">{{ game.venue }}</div> <!-- venue -->
-                <div class="score">{{ game.riscore }} - {{ game.opscore }}</div><!-- riscore v opscore -->
+                <div class="venue" style = "text-align: center;">{{ game.venue }}</div> <!-- venue -->
+                <div class="score" style = "text-align: center;">{{ game.riscore }} - {{ game.opscore }}</div><!-- riscore v opscore -->
                 <a href="{{ url_for('post', postid=game.postid) }}">Click here to view</a>
                 
                 {% if game[8] %}
